@@ -1,5 +1,5 @@
 import { ErrorHandler } from "../MiddleWare/ErrorHandler.js";
-import { Room } from "../models/Rooms.js";
+import { Room } from "../models/rooms.js";
 import { Hotel } from "../models/hotels.js";
 // import { Room } from "../models/rooms.js";
 
