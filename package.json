@@ -4,6 +4,9 @@
   "description": "This is a api for my Booking app",
   "type": "module",
   "main": "index.js",
+  "engines":{
+    "node":">=14.20.1"
+  },
   "scripts": {
     "start": "nodemon index.js"
   },
