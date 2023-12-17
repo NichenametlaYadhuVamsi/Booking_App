@@ -10,6 +10,7 @@ router.post("/",isAuthenticated,IsAdmin,Create_Hotel)
 router.put("/:id",isAuthenticated,IsAdmin,UpdateHotel)
 
 router.delete("/:id",isAuthenticated,IsAdmin,DeleteHotel)
+
 router.get("/all",GetAll)
 router.get("/:id",GetHotel)
 

@@ -1,4 +1,5 @@
 import { ErrorHandler } from "../MiddleWare/ErrorHandler.js"
+import { Hotel } from "../models/hotels.js"
 import { User } from "../models/users.js"
 
 export const Create_User = async(req,res)=>{
@@ -9,6 +10,47 @@ export const Create_User = async(req,res)=>{
     }
     catch(error){
         next()
+    }
+}
+
+export const UpdateFav=async(req,res,next)=>{
+    const {hotelId}=req.body
+    try{
+        console.log(req.params.id)
+        const user=await User.findById(req.params.id);
+        console.log(user)
+        if(!user){
+            return next(new ErrorHandler("no user",566))
+        }
+
+        user.favourite.push(hotelId)
+        await user.save()
+        res.status(200).json(user)
+    }
+    catch (error){
+        console.log(Error)
+        return next(new ErrorHandler("something error",567))
+    }
+}
+
+export const deleteFav=async(req,res,next)=>{
+    const {hotelId}=req.body
+    console.log(hotelId)
+    try{
+        console.log(req.params.id)
+        const user=await User.findById(req.params.id);
+        console.log(user)
+        if(!user){
+            return next(new ErrorHandler("no user",566))
+        }
+
+        user.favourite=user.favourite.filter(id => id !== hotelId);
+        await user.save()
+        res.status(200).json(user)
+    }
+    catch (error){
+        console.log(Error)
+        return next(new ErrorHandler("something error",567))
     }
 }
 
@@ -53,6 +95,30 @@ export const GetUser=async(req,res)=>{
     catch(error){
         next(new ErrorHandler('wrong User id',505))
     }
+}
+
+export const Favourite=async(req,res)=>{
+    try{
+        const user=await User.findById(req.params.id);
+        console.log(user)
+        if(!user){
+            return next(new ErrorHandler("no user",566))
+        }
+        const hotelIds=user.favourite
+        // console.log(hotelIds)
+        const hotels=await Hotel.find({_id:{$in:hotelIds}})
+        console.log(hotels)
+        // if (hotels.length === 0) {
+        //     return res.status(200).json('User has no favorite hotels' );
+        // }
+
+        return res.status(200).json(hotels)
+        
+    }
+    catch{
+        return next(new ErrorHandler('something wrong',505))
+    }
+    
 }
 
 

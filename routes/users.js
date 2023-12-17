@@ -1,6 +1,6 @@
 import express from "express"
 import { IsAdmin, IsUser, isAuthenticated } from "../MiddleWare/Authent.js"
-import { DeleteUser, GetAllUsers, GetUser, UpdateUser } from "../Controller.js/users.js"
+import { DeleteUser, Favourite, GetAllUsers, GetUser, UpdateFav, UpdateUser, deleteFav } from "../Controller.js/users.js"
 import { GetAll } from "../Controller.js/hotel.js"
 
 let router=express.Router()
@@ -18,7 +18,12 @@ router.delete("/:id",isAuthenticated,IsUser,DeleteUser)
 
 router.get("/all",isAuthenticated,GetAllUsers)
 
-router.get("/:id",isAuthenticated,GetUser)
+router.get("/:id",GetUser)
 
+router.put("/fav/:id",UpdateFav)
+
+router.post("/fav/:id",deleteFav)
+
+router.get("/fav/:id",Favourite)
 
 export default router

@@ -22,7 +22,9 @@ catch(error){
 }
 
 export const IsUser=async(req,res,next)=>{
+    console.log(req.user._id.toString()===req.params.id || req.user.isAdmin)
     try{
+        
         if(req.user._id.toString()===req.params.id || req.user.isAdmin){
             next()
         }

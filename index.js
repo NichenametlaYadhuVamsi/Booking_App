@@ -22,8 +22,15 @@ const connect=async()=>{
 }
 
 app.use(express.json())
-app.use(cors())
 app.use(cookieParser())
+app.use(cors(
+    {
+     origin: '*', 
+     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+     credentials: true,
+    }
+))
+
 
 
 app.get("/",(req,res)=>{
@@ -34,8 +41,6 @@ app.use("/api/hotel",HotelRouter)
 app.use("/api/auth",AuthRouter)
 app.use("/api/user",UserRouter)
 app.use("/api/rooms",RoomRouter)
-
-
 
 app.use(errorMiddleWre)
 
