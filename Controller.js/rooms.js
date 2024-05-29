@@ -44,36 +44,44 @@ export let UpdateRoom=async(req,res,next)=>{
 
 export let UpdateRoomAvailabilty=async(req,res,next)=>{
  
-  try{
-      await Room.updateOne(
-        {"roomNumbers._id" : req.params.id},
+  try {
+    const { id, roomId } = req.params;  
+    const [startDate, endDate] = req.body.dates; 
+    
+    
+    if (!startDate || !endDate) {
+        return res.status(400).send("Both start date and end date are required");
+    }
+
+    
+    const dateRange = {
+        startDate: new Date(startDate),
+        endDate: new Date(endDate)
+    };
+    
+    console.log(dateRange); 
+
+    
+    const result = await Room.updateOne(
+        { _id: id, "roomNumbers._id": roomId },  
         {
-          $push :{
-            "roomNumbers.$.unAvailableDates":req.body.dates
-          },
-
+            $push: {
+                "roomNumbers.$.unAvailableDates": dateRange  
+            }
         }
-      
-      )
+    );
 
-      // await Room.updateOne(
-      //   {"roomNumbers._id": req.params.id},
-      //   {
-      //     $set: {
-      //       "roomNumbers.$.unAvailableDates": updatedDates
-      //     }
-      //   }
-      // );
+    
+    if (result.nModified === 0) {
+        return res.status(404).send("Room not found or no updates applied");
+    }
 
-      res.status(200).send("Room Updated Successfully")
-  }
-
-  
-  
-  catch(error){
-      console.log(error)
-      return next(new ErrorHandler("Wrong id",505))
-  }
+    
+    res.status(200).send("Room updated successfully");
+} catch (error) {
+    console.error(error);  
+    next(error);  
+}
 
 }
 
@@ -106,7 +114,7 @@ export let GetAllRooms=async(req,res,next)=>{
   try{
     // console.log('vamsi')
     let hotel= await Room.find()
-     res.status(200).json(hotel)
+    res.status(200).json(hotel)
  }
  catch(error){
      console.log(error)
@@ -114,9 +122,11 @@ export let GetAllRooms=async(req,res,next)=>{
 }
 
 export let GetRooms=async(req,res,next)=>{
+  console.log('I love yous')
   try{
+    
     let room= await Room.findById(req.params.id)
-     res.status(200).json(room)
+    res.status(200).json(room)
   }
   catch(error){
      console.log("Wrong Id")

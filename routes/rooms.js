@@ -9,11 +9,11 @@ const router=express.Router()
 router.post("/:hotelId",isAuthenticated,IsAdmin,Create_Room)
 
 router.put("/:id",isAuthenticated,IsAdmin,UpdateRoom)
-router.put("/roomupdate/:id",UpdateRoomAvailabilty)
+router.put("/roomupdate/:id/:roomId",UpdateRoomAvailabilty)
 
 router.delete("/:hotelId/:id",isAuthenticated,IsAdmin,DeleteRoom)
 router.get("/all",GetAllRooms)
-router.get("/:hotelId",GeTAllRoomsOFAhOTEL)
+router.get("/hotel/:hotelId",GeTAllRoomsOFAhOTEL)
 router.get("/:id",GetRooms)
 
 export default router

@@ -13,14 +13,30 @@ const RoomSchema =new mongoose.Schema({
     },
     MaxPeople:{
         type:Number,
-        require:true,
+        required:true,
 
     },
     desc:{
         type:String,
         required:true
     },
-    roomNumbers:[{number:Number,unAvailableDates:{type:[Date]}}]
+    roomNumbers:[
+        {
+            number:Number,
+            unAvailableDates:[
+            {
+                startDate: {
+                    type:Date,
+                    required:true
+                },
+                endDate: {
+                    type: Date,
+                    required: true
+                }
+            }
+            ]
+        }
+    ]
 
 
 },{timestamps:true})
